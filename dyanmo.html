@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dyanmo</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
+    <style>
+        body { margin: 0; overflow: hidden; background: black; }
+    </style>
+</head>
+<body>
+    <script>
+        let shapes = [];
+
+        function setup() {
+            createCanvas(windowWidth, windowHeight);
+            noStroke();
+        }
+
+        function draw() {
+            background(0, 20); 
+            for (let shape of shapes) {
+                shape.update();
+                shape.display();
+            }
+        }
+
+        function mouseDragged() {
+            let size = random(10, 100);
+            let shape = new Shape(mouseX, mouseY, size);
+            shapes.push(shape);
+            if (shapes.length > 200) shapes.shift(); 
+        }
+
+        function mousePressed() {
+            shapes = []; 
+        }
+
+        class Shape {
+            constructor(x, y, size) {
+                this.x = x;
+                this.y = y;
+                this.size = size;
+                this.color = [random(255), random(255), random(255), 150];
+                this.speedX = random(-3, 3);
+                this.speedY = random(-3, 3);
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.size *= 0.98; 
+            }
+            display() {
+                fill(this.color);
+                ellipse(this.x, this.y, this.size);
+            }
+        }
+
+        function windowResized() {
+            resizeCanvas(windowWidth, windowHeight);
+        }
+    </script>
+</body>
+</html>
